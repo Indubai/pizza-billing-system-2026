@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Python Pizza - Order Details</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff5e6;
+            margin: 0;
+            padding: 30px 15px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #d62828;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .order-info {
+            background: #fff5e6;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .order-info p {
+            margin: 10px 0;
+        }
+
+        h2 {
+            color: #d62828;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #d62828;
+            color: white;
+        }
+
+        tr:hover {
+            background: #fff5e6;
+        }
+
+        .totals {
+            margin-top: 25px;
+            text-align: right;
+            line-height: 1.9;
+        }
+
+        .grand-total {
+            font-size: 23px;
+            font-weight: bold;
+            color: #d62828;
+        }
+
+        .back-btn {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            padding: 12px 25px;
+            background: #d62828;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back-btn:hover {
+            background: #a4161a;
+        }
+
+        @media (max-width: 650px) {
+            .container {
+                padding: 18px;
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 650px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🍕 Python Pizza</h1>
+
+    <p class="subtitle">Complete Order Details</p>
+
+    <div class="order-info">
+
+        <p>
+            <strong>Order ID:</strong>
+            {{ order.order_id }}
+        </p>
+
+        <p>
+            <strong>Customer Name:</strong>
+            {{ order.customer_name }}
+        </p>
+
+        <p>
+            <strong>Order Date:</strong>
+            {{ order.created_at|date:"d M Y, h:i A" }}
+        </p>
+
+    </div>
+
+    <h2>Purchased Items</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Details</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for item in bill_items %}
+
+            <tr>
+
+                <td>
+                    {{ item.name|default:item.item|default:"Order Item" }}
+                </td>
+
+                <td>
+                    {{ item.details|default:"-" }}
+                </td>
+
+                <td>
+                    {{ item.quantity|default:"1" }}
+                </td>
+
+                <td>
+                    ₹{{ item.price|default:"0" }}
+                </td>
+
+                <td>
+                    ₹{{ item.total|default:"0" }}
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="5">
+                    No item details available.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <div class="totals">
+
+        <p>
+            Subtotal: ₹{{ order.subtotal }}
+        </p>
+
+        <p>
+            Discount: ₹{{ order.discount }}
+        </p>
+
+        <p class="grand-total">
+            Final Total: ₹{{ order.final_total }}
+        </p>
+
+    </div>
+
+    <a href="{% url 'order_history' %}" class="back-btn">
+        ← Back to Order History
+    </a>
+
+</div>
+
+</body>
+</html>

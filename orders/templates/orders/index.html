@@ -1,0 +1,1303 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Python Pizza | Order Online</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff8ef;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #8e0000, #c62828, #e65100);
+            color: white;
+            text-align: center;
+            padding: 65px 15px;
+        }
+
+        header h1 {
+            font-size: 48px;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 19px;
+            margin-top: 10px;
+        }
+
+        nav {
+            background: #720000;
+            padding: 16px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffd166;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px 10px;
+            text-align: center;
+        }
+
+        .welcome {
+            padding: 55px 15px;
+        }
+
+        .welcome h2 {
+            color: #b71c1c;
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .welcome p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .welcome-button {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 13px 30px;
+            background: #b71c1c;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .welcome-button:hover {
+            background: #790000;
+            transform: translateY(-3px);
+        }
+
+        .section-title {
+            color: #b71c1c;
+            font-size: 32px;
+            margin: 55px 0 25px;
+        }
+
+        .section-description {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+        .menu-card {
+            background: white;
+            width: 260px;
+            padding: 18px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.16);
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .menu-card h3 {
+            color: #b71c1c;
+            margin: 13px 0 8px;
+            font-size: 20px;
+        }
+
+        .menu-card p {
+            color: #666;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #228b22 !important;
+            font-size: 17px;
+        }
+
+        .size-card {
+            border-top: 5px solid #b71c1c;
+        }
+
+        .size-card h3 {
+            font-size: 24px;
+        }
+
+        .food-category {
+            margin-top: 35px;
+        }
+
+        .food-category h4 {
+            color: #b71c1c;
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+
+        .order-box {
+            background: white;
+            max-width: 900px;
+            margin: 45px auto;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            text-align: left;
+        }
+
+        .order-box h2 {
+            text-align: center;
+            color: #b71c1c;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .form-heading {
+            color: #b71c1c;
+            margin-top: 35px;
+            border-bottom: 2px solid #f2dddd;
+            padding-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #b71c1c;
+            box-shadow: 0 0 5px rgba(183,28,28,0.2);
+        }
+
+        input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+
+        .checkbox-label {
+            font-weight: normal;
+            margin-top: 12px;
+        }
+
+        .pizza-order-card {
+            background: #fff8ef;
+            border: 1px solid #f0d5c5;
+            border-radius: 14px;
+            padding: 23px;
+            margin-top: 20px;
+        }
+
+        .pizza-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pizza-card-header h3 {
+            color: #b71c1c;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background: #b71c1c;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #8e0000;
+        }
+
+        .remove-pizza {
+            background: #555;
+            width: auto;
+            padding: 8px 12px;
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .remove-pizza:hover {
+            background: #222;
+        }
+
+        .add-button {
+            background: #228b22;
+        }
+
+        .add-button:hover {
+            background: #176b17;
+        }
+
+        .submit-button {
+            background: #228b22;
+            font-size: 19px;
+        }
+
+        .submit-button:hover {
+            background: #176b17;
+        }
+
+        .submit-button:disabled {
+            background: #777;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .food-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff8ef;
+            border-radius: 12px;
+            padding: 13px;
+            margin-bottom: 13px;
+            border: 1px solid #eee;
+        }
+
+        .food-item img {
+            width: 100px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .food-info {
+            flex: 1;
+        }
+
+        .food-info h5 {
+            font-size: 16px;
+        }
+
+        .food-quantity {
+            width: 110px;
+        }
+
+        .food-quantity input {
+            width: 100%;
+            padding: 9px;
+        }
+
+        .live-bill {
+            background: #fff8ef;
+            border: 2px solid #b71c1c;
+            border-radius: 14px;
+            padding: 22px;
+            margin-top: 30px;
+        }
+
+        .live-bill h3 {
+            color: #b71c1c;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eadada;
+        }
+
+        .bill-total {
+            font-size: 21px;
+            font-weight: bold;
+            color: #228b22;
+            margin-top: 15px;
+        }
+
+        .bill-discount {
+            color: #228b22;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            margin: 5px;
+        }
+
+        @media(max-width: 700px) {
+
+            header {
+                padding: 45px 10px;
+            }
+
+            header h1 {
+                font-size: 32px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 6px;
+                font-size: 14px;
+            }
+
+            .welcome h2 {
+                font-size: 27px;
+            }
+
+            .section-title {
+                font-size: 26px;
+            }
+
+            .order-box {
+                padding: 18px;
+            }
+
+            .food-item {
+                gap: 9px;
+                flex-wrap: wrap;
+            }
+
+            .food-item img {
+                width: 75px;
+                height: 75px;
+            }
+
+            .food-quantity {
+                width: 85px;
+            }
+
+            .pizza-order-card {
+                padding: 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <h1>🍕 PYTHON PIZZA</h1>
+        <p>Fresh Pizza, Delicious Moments!</p>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#pizzas">Our Pizzas</a>
+        <a href="#food">Food Menu</a>
+        <a href="#order">Place Order</a>
+        <a href="{% url 'order_history' %}">Order History</a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'customer_dashboard' %}">My Account</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </nav>
+
+    <main class="container">
+
+        <section id="home" class="welcome">
+
+            <h2>Welcome to Python Pizza!</h2>
+
+            <p>
+                Delicious pizzas, refreshing drinks,
+                tasty snacks and wonderful desserts.
+            </p>
+
+            <p>
+                Your favourite food is just one order away!
+            </p>
+
+            <a href="#order" class="welcome-button">
+                Order Now 🍕
+            </a>
+
+        </section>
+
+        <section>
+
+            <h2 class="section-title">🍕 Our Pizza Sizes</h2>
+
+            <p class="section-description">
+                Choose your favourite size and pizza type.
+            </p>
+
+            <div class="card-container">
+
+                {% for size, types in pizza_prices.items %}
+
+                <div class="menu-card size-card">
+
+                    <h3>{{ size }} Pizza</h3>
+
+                    {% for type, price in types.items %}
+
+                    <p>
+                        {{ type }}:
+                        <span class="price">₹{{ price }}</span>
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        <section id="pizzas">
+
+            <h2 class="section-title">🍕 Our Special Pizzas</h2>
+
+            <p class="section-description">
+                Fresh ingredients and delicious flavours!
+            </p>
+
+            <div class="card-container">
+
+                <div class="menu-card">
+                    <img src="{% static 'orders/images/margherita.jpg' %}" alt="Margherita">
+                    <h3>Margherita</h3>
+                    <p>Delicious cheesy pizza.</p>
+                </div>
+
+                <div class="menu-card">
+                    <img src="{% static 'orders/images/farmhouse.jpg' %}" alt="Farmhouse">
+                    <h3>Farmhouse</h3>
+                    <p>Fresh vegetables and cheese.</p>
+                </div>
+
+                <div class="menu-card">
+                    <img src="{% static 'orders/images/veggie.jpg' %}" alt="Veggie Delight">
+                    <h3>Veggie Delight</h3>
+                    <p>Loaded with fresh vegetables.</p>
+                </div>
+
+                <div class="menu-card">
+                    <img src="{% static 'orders/images/chicken.jpg' %}" alt="Chicken Tikka">
+                    <h3>Chicken Tikka</h3>
+                    <p>Delicious chicken toppings.</p>
+                </div>
+
+                <div class="menu-card">
+                    <img src="{% static 'orders/images/pepperoni.jpg' %}" alt="Pepperoni">
+                    <h3>Pepperoni</h3>
+                    <p>Classic pepperoni pizza.</p>
+                </div>
+
+                <div class="menu-card">
+                    <img src="{% static 'orders/images/bbq.jpg' %}" alt="BBQ Chicken">
+                    <h3>BBQ Chicken</h3>
+                    <p>Smoky BBQ chicken flavour.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="food">
+
+            <h2 class="section-title">🥤 Our Food Menu</h2>
+
+            <p class="section-description">
+                Explore our drinks, snacks and desserts.
+            </p>
+
+            {% for category, items in menu.items %}
+
+            <div class="food-category">
+
+                <h4>{{ category }}</h4>
+
+                <div class="card-container">
+
+                    {% for item, price in items.items %}
+
+                    <div class="menu-card">
+
+                        {% for image_name, image_path in menu_images.items %}
+
+                            {% if image_name == item %}
+                                <img src="{% static image_path %}" alt="{{ item }}">
+                            {% endif %}
+
+                        {% endfor %}
+
+                        <h3>{{ item }}</h3>
+                        <p class="price">₹{{ price }}</p>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </section>
+
+        <section id="order">
+
+            <div class="order-box">
+
+                <h2>🛒 Place Your Order</h2>
+
+                <p style="text-align:center;color:#777;">
+                    Fill in the details below to order your favourite food.
+                </p>
+
+                <form
+                    method="POST"
+                    action="{% url 'place_order' %}"
+                    id="order-form"
+                >
+
+                    {% csrf_token %}
+                    <input
+    type="hidden"
+    name="submission_token"
+    value="{{ request.session.order_token }}"
+>
+
+                    <label for="customer_name">Customer Name</label>
+
+                    <input
+                        type="text"
+                        id="customer_name"
+                        name="customer_name"
+                        placeholder="Enter your name"
+                        maxlength="100"
+                        value="{% if user.is_authenticated %}{{ user.username }}{% endif %}"
+                        required
+                    >
+
+                    <h3 class="form-heading">
+                        🍕 Choose Your Pizzas
+                    </h3>
+
+                    <p>
+                        You can order different sizes,
+                        Veg and Non-Veg pizzas together!
+                    </p>
+
+                    <div id="pizza-container"></div>
+
+                    <button
+                        type="button"
+                        class="add-button"
+                        id="add-pizza"
+                    >
+                        + Add Another Pizza
+                    </button>
+
+                    <h3 class="form-heading">
+                        🥤 Drinks, Snacks and Desserts
+                    </h3>
+
+                    <p>
+                        Select the quantity of each additional item.
+                        Leave it as 0 if you don't want that item.
+                    </p>
+
+                    {% for category, items in menu.items %}
+
+                    <div class="food-category">
+
+                        <h4>{{ category }}</h4>
+
+                        {% for item, price in items.items %}
+
+                        <div class="food-item">
+
+                            {% for image_name, image_path in menu_images.items %}
+
+                                {% if image_name == item %}
+
+                                <img
+                                    src="{% static image_path %}"
+                                    alt="{{ item }}"
+                                >
+
+                                {% endif %}
+
+                            {% endfor %}
+
+                            <div class="food-info">
+
+                                <h5>{{ item }}</h5>
+
+                                <p class="price">₹{{ price }}</p>
+
+                            </div>
+
+                            <div class="food-quantity">
+
+                                <label>Quantity</label>
+
+                                <input
+                                    type="number"
+                                    name="extra_quantities"
+                                    value="0"
+                                    min="0"
+                                    max="100"
+                                >
+
+                            </div>
+
+                            <input
+                                type="hidden"
+                                name="extra_items"
+                                value="{{ item }}"
+                            >
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% endfor %}
+
+                    <div class="live-bill" id="live-bill">
+
+                        <h3>🧾 Your Live Bill Preview</h3>
+
+                        <div id="bill-items">
+                            <p>Select your items to see your bill.</p>
+                        </div>
+
+                        <div class="bill-row">
+                            <strong>Subtotal</strong>
+                            <strong id="bill-subtotal">₹0.00</strong>
+                        </div>
+
+                        <div class="bill-row bill-discount">
+                            <strong>Discount</strong>
+                            <strong id="bill-discount">₹0.00</strong>
+                        </div>
+
+                        <div class="bill-row bill-total">
+                            <strong>Estimated Total</strong>
+                            <strong id="bill-total">₹0.00</strong>
+                        </div>
+
+                        <p style="font-size:13px;color:#777;margin-top:12px;">
+                            A 10% discount applies when your subtotal reaches ₹1,000.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                        id="place-order-button"
+                    >
+                        Place My Order 🍕
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <h3>🍕 PYTHON PIZZA</h3>
+
+        <p>Thank you for visiting Python Pizza!</p>
+        <p>Freshly made with love ❤️</p>
+        <p>© 2026 Python Pizza. All rights reserved.</p>
+
+    </footer>
+
+    {{ pizza_prices|json_script:"pizza-prices-data" }}
+    {{ pizza_flavours|json_script:"pizza-flavours-data" }}
+    {{ base_prices|json_script:"base-prices-data" }}
+    {{ menu|json_script:"menu-data" }}
+
+    <script>
+
+        // =====================================
+        // LOAD DATA FROM DJANGO
+        // =====================================
+
+        const pizzaPrices = JSON.parse(
+            document.getElementById("pizza-prices-data").textContent
+        );
+
+        const pizzaFlavours = JSON.parse(
+            document.getElementById("pizza-flavours-data").textContent
+        );
+
+        const basePrices = JSON.parse(
+            document.getElementById("base-prices-data").textContent
+        );
+
+        const menuPrices = JSON.parse(
+            document.getElementById("menu-data").textContent
+        );
+
+
+        const pizzaContainer = document.getElementById("pizza-container");
+
+        const addPizzaButton = document.getElementById("add-pizza");
+
+        const orderForm = document.getElementById("order-form");
+
+        let pizzaCount = 0;
+
+
+        // =====================================
+        // CREATE PIZZA CARD
+        // =====================================
+
+        function addPizza() {
+
+            const index = pizzaCount++;
+
+            const card = document.createElement("div");
+
+            card.className = "pizza-order-card";
+            card.dataset.originalIndex = index;
+
+            let sizeOptions = "";
+
+            Object.keys(pizzaPrices).forEach(size => {
+
+                sizeOptions += `
+                    <option value="${size}">
+                        ${size}
+                    </option>
+                `;
+
+            });
+
+
+            let baseOptions = "";
+
+            Object.entries(basePrices).forEach(([base, price]) => {
+
+                baseOptions += `
+                    <option value="${base}">
+                        ${base} (+₹${price})
+                    </option>
+                `;
+
+            });
+
+
+            card.innerHTML = `
+
+                <div class="pizza-card-header">
+
+                    <h3>🍕 Pizza ${index + 1}</h3>
+
+                    <button
+                        type="button"
+                        class="remove-pizza"
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+                <label>Pizza Size</label>
+
+                <select name="pizza_size" required>
+                    ${sizeOptions}
+                </select>
+
+                <label>Pizza Type</label>
+
+                <select
+                    name="pizza_type"
+                    class="pizza-type"
+                    required
+                >
+                    <option value="Veg">Veg</option>
+                    <option value="Non-Veg">Non-Veg</option>
+                </select>
+
+                <label>Pizza Flavour</label>
+
+                <select
+                    name="pizza_flavour"
+                    class="pizza-flavour"
+                    required
+                >
+                </select>
+
+                <label>Pizza Base</label>
+
+                <select name="pizza_base" required>
+                    ${baseOptions}
+                </select>
+
+                <h4 style="color:#b71c1c;margin-top:20px;">
+                    Extra Toppings
+                </h4>
+
+                <label class="checkbox-label">
+
+                    <input
+                        type="checkbox"
+                        name="pizza_cheese_${index}"
+                        value="yes"
+                    >
+
+                    Extra Cheese (+₹40)
+
+                </label>
+
+                <label class="checkbox-label">
+
+                    <input
+                        type="checkbox"
+                        name="pizza_veggies_${index}"
+                        value="yes"
+                    >
+
+                    Extra Veggies (+₹30)
+
+                </label>
+
+                <label>Pizza Quantity</label>
+
+                <input
+                    type="number"
+                    name="pizza_quantity"
+                    min="1"
+                    max="100"
+                    value="1"
+                    required
+                >
+
+            `;
+
+
+            pizzaContainer.appendChild(card);
+
+
+            const typeDropdown = card.querySelector(".pizza-type");
+
+            const flavourDropdown = card.querySelector(".pizza-flavour");
+
+
+            function updateFlavours() {
+
+                const selectedType = typeDropdown.value;
+
+                flavourDropdown.innerHTML = "";
+
+                pizzaFlavours[selectedType].forEach(flavour => {
+
+                    const option = document.createElement("option");
+
+                    option.value = flavour;
+
+                    option.textContent = flavour;
+
+                    flavourDropdown.appendChild(option);
+
+                });
+
+                updateLiveBill();
+
+            }
+
+
+            typeDropdown.addEventListener(
+                "change",
+                updateFlavours
+            );
+
+            updateFlavours();
+
+
+            card.querySelector(".remove-pizza").addEventListener(
+                "click",
+                function() {
+
+                    if (pizzaContainer.children.length > 1) {
+
+                        card.remove();
+
+                        updateLiveBill();
+
+                    } else {
+
+                        alert("You must order at least one pizza.");
+
+                    }
+
+                }
+            );
+
+            updateLiveBill();
+
+        }
+
+
+        // =====================================
+        // ADD FIRST PIZZA
+        // =====================================
+
+        addPizza();
+
+
+        // =====================================
+        // ADD ANOTHER PIZZA
+        // =====================================
+
+        addPizzaButton.addEventListener(
+            "click",
+            addPizza
+        );
+
+
+        // =====================================
+        // LIVE BILL PREVIEW
+        // =====================================
+
+        function updateLiveBill() {
+
+            let subtotal = 0;
+
+            let billHTML = "";
+
+
+            // PIZZA CALCULATION
+
+            const pizzaCards = document.querySelectorAll(
+                ".pizza-order-card"
+            );
+
+
+            pizzaCards.forEach((card, index) => {
+
+                const size = card.querySelector(
+                    '[name="pizza_size"]'
+                ).value;
+
+                const type = card.querySelector(
+                    '[name="pizza_type"]'
+                ).value;
+
+                const flavour = card.querySelector(
+                    '[name="pizza_flavour"]'
+                ).value;
+
+                const base = card.querySelector(
+                    '[name="pizza_base"]'
+                ).value;
+
+                const quantity = Number(
+                    card.querySelector(
+                        '[name="pizza_quantity"]'
+                    ).value
+                ) || 0;
+
+
+                let price = Number(
+                    pizzaPrices[size][type]
+                );
+
+
+                price += Number(basePrices[base]) || 0;
+
+
+                if (
+                    card.querySelector(
+                        `[name="pizza_cheese_${getCardIndex(card)}"]`
+                    )?.checked
+                ) {
+
+                    price += 40;
+
+                }
+
+
+                if (
+                    card.querySelector(
+                        `[name="pizza_veggies_${getCardIndex(card)}"]`
+                    )?.checked
+                ) {
+
+                    price += 30;
+
+                }
+
+
+                const itemTotal = price * quantity;
+
+                subtotal += itemTotal;
+
+
+                if (quantity > 0) {
+
+                    billHTML += `
+                        <div class="bill-row">
+
+                            <span>
+                                ${size} ${type} ${flavour} × ${quantity}
+                            </span>
+
+                            <strong>₹${itemTotal.toFixed(2)}</strong>
+
+                        </div>
+                    `;
+
+                }
+
+            });
+
+
+            // ADDITIONAL FOOD ITEMS
+
+            const extraItems = document.querySelectorAll(
+                '[name="extra_items"]'
+            );
+
+            const extraQuantities = document.querySelectorAll(
+                '[name="extra_quantities"]'
+            );
+
+
+            extraItems.forEach((input, index) => {
+
+                const itemName = input.value;
+
+                const quantity = Number(
+                    extraQuantities[index].value
+                ) || 0;
+
+                let itemPrice = 0;
+
+
+                for (const category in menuPrices) {
+
+                    if (
+                        menuPrices[category][itemName] !== undefined
+                    ) {
+
+                        itemPrice = Number(
+                            menuPrices[category][itemName]
+                        );
+
+                        break;
+
+                    }
+
+                }
+
+
+                const itemTotal = itemPrice * quantity;
+
+                subtotal += itemTotal;
+
+
+                if (quantity > 0) {
+
+                    billHTML += `
+                        <div class="bill-row">
+
+                            <span>${itemName} × ${quantity}</span>
+
+                            <strong>₹${itemTotal.toFixed(2)}</strong>
+
+                        </div>
+                    `;
+
+                }
+
+            });
+
+
+            // DISCOUNT
+
+            let discount = 0;
+
+            if (subtotal >= 1000) {
+
+                discount = subtotal * 0.10;
+
+            }
+
+
+            const finalTotal = subtotal - discount;
+
+
+            // DISPLAY BILL
+
+            document.getElementById(
+                "bill-items"
+            ).innerHTML = billHTML ||
+                "<p>Select your items to see your bill.</p>";
+
+
+            document.getElementById(
+                "bill-subtotal"
+            ).textContent = "₹" + subtotal.toFixed(2);
+
+
+            document.getElementById(
+                "bill-discount"
+            ).textContent = "₹" + discount.toFixed(2);
+
+
+            document.getElementById(
+                "bill-total"
+            ).textContent = "₹" + finalTotal.toFixed(2);
+
+        }
+
+
+        // GET ORIGINAL PIZZA CARD INDEX
+
+        function getCardIndex(card) {
+    return Number(card.dataset.originalIndex);
+}
+
+
+        // Store the original checkbox index on each card.
+
+        const originalAddPizza = addPizza;
+
+
+        // =====================================
+        // UPDATE BILL WHEN FORM CHANGES
+        // =====================================
+
+        orderForm.addEventListener(
+            "input",
+            updateLiveBill
+        );
+
+        orderForm.addEventListener(
+            "change",
+            updateLiveBill
+        );
+
+
+        // =====================================
+        // PREVENT MULTIPLE FORM SUBMISSIONS
+        // =====================================
+
+        let orderSubmitted = false;
+
+        orderForm.addEventListener("submit", function(event) {
+
+            if (orderSubmitted) {
+
+                event.preventDefault();
+
+                return;
+
+            }
+
+            if (!orderForm.checkValidity()) {
+
+                return;
+
+            }
+
+            orderSubmitted = true;
+
+            const submitButton = document.getElementById(
+                "place-order-button"
+            );
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "Processing Your Order...";
+
+        });
+
+
+        // INITIAL BILL
+
+        updateLiveBill();
+
+    </script>
+
+</body>
+
+</html>
